@@ -52,13 +52,31 @@ class Post extends Model
 
         static::creating(function ($post) {
             if (empty($post->slug)) {
-                $post->slug = Str::slug($post->title);
+                $baseSlug = Str::slug($post->title);
+                $slug = $baseSlug;
+                $counter = 1;
+
+                while (static::where('slug', $slug)->exists()) {
+                    $slug = $baseSlug . '-' . $counter;
+                    $counter++;
+                }
+
+                $post->slug = $slug;
             }
         });
 
         static::updating(function ($post) {
             if ($post->isDirty('title') && empty($post->slug)) {
-                $post->slug = Str::slug($post->title);
+                $baseSlug = Str::slug($post->title);
+                $slug = $baseSlug;
+                $counter = 1;
+
+                while (static::where('slug', $slug)->where('id', '!=', $post->id)->exists()) {
+                    $slug = $baseSlug . '-' . $counter;
+                    $counter++;
+                }
+
+                $post->slug = $slug;
             }
         });
     }

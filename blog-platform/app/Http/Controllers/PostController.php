@@ -72,7 +72,18 @@ class PostController extends Controller
         ]);
 
         $validated['author_id'] = Auth::id();
-        $validated['slug'] = Str::slug($validated['title']);
+
+        // Generate unique slug
+        $baseSlug = Str::slug($validated['title']);
+        $slug = $baseSlug;
+        $counter = 1;
+
+        while (Post::where('slug', $slug)->exists()) {
+            $slug = $baseSlug . '-' . $counter;
+            $counter++;
+        }
+
+        $validated['slug'] = $slug;
 
         if ($validated['status'] === 'published') {
             $validated['published_at'] = now();
@@ -162,7 +173,19 @@ class PostController extends Controller
             'status' => 'required|in:draft,published',
         ]);
 
-        $validated['slug'] = Str::slug($validated['title']);
+        // Generate unique slug only if title changed
+        if ($validated['title'] !== $post->title) {
+            $baseSlug = Str::slug($validated['title']);
+            $slug = $baseSlug;
+            $counter = 1;
+
+            while (Post::where('slug', $slug)->where('id', '!=', $post->id)->exists()) {
+                $slug = $baseSlug . '-' . $counter;
+                $counter++;
+            }
+
+            $validated['slug'] = $slug;
+        }
 
         if ($validated['status'] === 'published' && !$post->published_at) {
             $validated['published_at'] = now();
@@ -170,9 +193,9 @@ class PostController extends Controller
 
         // Handle image upload
         if ($request->hasFile('featured_image')) {
-            // Delete old image
-            if ($post->featured_image && file_exists(public_path($post->featured_image))) {
-                unlink(public_path($post->featured_image));
+            // Delete old image from S3
+            if ($post->featured_image) {
+                Storage::disk('s3')->delete($post->featured_image);
             }
 
             $image = $request->file('featured_image');
