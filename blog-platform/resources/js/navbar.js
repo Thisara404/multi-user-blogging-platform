@@ -11,32 +11,56 @@ export class NavbarManager {
         this.setupSmoothScrolling();
     }
 
-    updateNavbar() {
-        const currentScrollY = window.scrollY;
+    // updateNavbar() {
+    //     const currentScrollY = window.scrollY;
 
-        if (currentScrollY > 50) {
-            this.navbar.classList.add('bg-gradient-to-r', 'from-orange-900', 'via-yellow-700', 'to-orange-500', 'backdrop-blur-md', 'shadow-xl');
-            this.navbar.classList.remove('bg-transparent');
+    //     if (currentScrollY > 50) {
+    //         this.navbar.classList.add('bg-gradient-to-r', 'from-orange-900', 'via-yellow-700', 'to-orange-500', 'backdrop-blur-md', 'shadow-xl');
+    //         this.navbar.classList.remove('bg-transparent');
 
-            // Update text colors for better contrast using gradient-like classes
-            this.navbar.querySelectorAll('.nav-link, h1').forEach(el => {
-                el.classList.add('text-transparent', 'bg-clip-text', 'bg-gradient-to-r', 'from-yellow-300', 'to-orange-700');
-                el.classList.remove('text-white', 'text-white/80', '!text-gray-900');
-            });
-        } else {
-            this.navbar.classList.remove('bg-gradient-to-r', 'from-orange-900', 'via-yellow-700', 'to-orange-500', 'backdrop-blur-md', 'shadow-xl');
-            this.navbar.classList.add('bg-transparent');
+    //         // Update text colors for better contrast using gradient-like classes
+    //         this.navbar.querySelectorAll('.nav-link, h1').forEach(el => {
+    //             el.classList.add('text-transparent', 'bg-clip-text', 'bg-gradient-to-r', 'from-yellow-300', 'to-orange-700');
+    //             el.classList.remove('text-white', 'text-white/80', '!text-gray-900');
+    //         });
+    //     } else {
+    //         this.navbar.classList.remove('bg-gradient-to-r', 'from-orange-900', 'via-yellow-700', 'to-orange-500', 'backdrop-blur-md', 'shadow-xl');
+    //         this.navbar.classList.add('bg-transparent');
 
-            // Restore original gradient text colors
-            this.navbar.querySelectorAll('.nav-link, h1').forEach(el => {
-                el.classList.remove('text-transparent', 'bg-clip-text', 'bg-gradient-to-r', 'from-yellow-300', 'to-orange-700', '!text-gray-900');
-                el.classList.add('text-transparent', 'bg-clip-text', 'bg-gradient-to-r', 'from-orange-400', 'to-yellow-500');
-            });
+    //         // Restore original gradient text colors
+    //         this.navbar.querySelectorAll('.nav-link, h1').forEach(el => {
+    //             el.classList.remove('text-transparent', 'bg-clip-text', 'bg-gradient-to-r', 'from-yellow-300', 'to-orange-700', '!text-gray-900');
+    //             el.classList.add('text-transparent', 'bg-clip-text', 'bg-gradient-to-r', 'from-orange-400', 'to-yellow-500');
+    //         });
+    //     }
+
+    //     this.lastScrollY = currentScrollY;
+    // }
+ function updateNavbar() {
+            const currentScrollY = window.scrollY;
+
+            if (currentScrollY > 50) {
+                navbar.classList.add('bg-white/95', 'backdrop-blur-md', 'shadow-xl');
+                navbar.classList.remove('bg-transparent');
+
+                // Apply gradient text for nav links and logo
+                navbar.querySelectorAll('.nav-link, h1').forEach(el => {
+                    el.classList.add('bg-gradient-to-r', 'from-blue-500', 'to-purple-600', 'bg-clip-text', 'text-transparent');
+                    el.classList.remove('text-white', 'text-white/80', '!text-gray-900');
+                });
+            } else {
+                navbar.classList.remove('bg-white/95', 'backdrop-blur-md', 'shadow-xl');
+                navbar.classList.add('bg-transparent');
+
+                // Restore gradient text for nav links and logo
+                navbar.querySelectorAll('.nav-link, h1').forEach(el => {
+                    el.classList.add('bg-gradient-to-r', 'from-blue-500', 'to-pink-500', 'bg-clip-text', 'text-transparent');
+                    el.classList.remove('text-white', 'text-white/80', '!text-gray-900');
+                });
+            }
+
+            lastScrollY = currentScrollY;
         }
-
-        this.lastScrollY = currentScrollY;
-    }
-
     setupScrollListener() {
         window.addEventListener('scroll', () => {
             if (!this.ticking) {
