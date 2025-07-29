@@ -1,4 +1,8 @@
 <x-app-layout>
+@php
+use Illuminate\Support\Facades\Storage;
+@endphp
+
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -18,7 +22,7 @@
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             <article class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 @if($post->featured_image)
-                    <img src="{{ asset($post->featured_image) }}"
+                    <img src="{{ Storage::disk('s3')->url($post->featured_image) }}"
                          alt="{{ $post->title }}"
                          class="w-full h-64 object-cover">
                 @endif

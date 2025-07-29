@@ -12,6 +12,7 @@ use Illuminate\Support\Str;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -80,22 +81,17 @@ class PostController extends Controller
         // Handle image upload with resizing
         if ($request->hasFile('featured_image')) {
             $image = $request->file('featured_image');
-            $filename = time() . '.' . $image->getClientOriginalExtension();
+            $filename = time() . '_' . Str::random(10) . '.' . $image->getClientOriginalExtension();
 
-            // Create directory if it doesn't exist
-            $uploadPath = public_path('images/posts');
-            if (!file_exists($uploadPath)) {
-                mkdir($uploadPath, 0755, true);
-            }
-
-            // Resize and save image
+            // Resize image
             $manager = new ImageManager(new Driver());
             $resizedImage = $manager->read($image)->resize(800, 600, function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize();
             });
 
-            $resizedImage->save(public_path('images/posts/' . $filename));
+            // Store in S3
+            Storage::disk('s3')->put('images/posts/' . $filename, $resizedImage->encode(), 'public');
             $validated['featured_image'] = 'images/posts/' . $filename;
         }
 
@@ -180,7 +176,7 @@ class PostController extends Controller
             }
 
             $image = $request->file('featured_image');
-            $filename = time() . '.' . $image->getClientOriginalExtension();
+            $filename = time() . '_' . Str::random(10) . '.' . $image->getClientOriginalExtension();
 
             $manager = new ImageManager(new Driver());
             $resizedImage = $manager->read($image)->resize(800, 600, function ($constraint) {
@@ -188,7 +184,8 @@ class PostController extends Controller
                 $constraint->upsize();
             });
 
-            $resizedImage->save(public_path('images/posts/' . $filename));
+            // Store in S3
+            Storage::disk('s3')->put('images/posts/' . $filename, $resizedImage->encode(), 'public');
             $validated['featured_image'] = 'images/posts/' . $filename;
         }
 

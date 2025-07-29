@@ -1,4 +1,8 @@
 <x-app-layout>
+@php
+use Illuminate\Support\Facades\Storage;
+@endphp
+
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Edit Post') }}
@@ -85,7 +89,9 @@
                             @if($post->featured_image)
                                 <div class="mt-4">
                                     <p class="text-sm text-gray-600">Current Image:</p>
-                                    <img src="{{ asset($post->featured_image) }}" alt="Current featured image" class="mt-2 w-48 h-auto rounded-md">
+                                    <img src="{{ Storage::disk('s3')->url($post->featured_image) }}"
+                                         alt="Current featured image"
+                                         class="mt-2 w-48 h-auto rounded-md">
                                 </div>
                             @endif
                             @error('featured_image')
