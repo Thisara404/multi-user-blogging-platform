@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class Post extends Model
 {
@@ -28,6 +29,22 @@ class Post extends Model
     protected $casts = [
         'published_at' => 'datetime',
     ];
+
+    // Add this method for S3 image URLs
+    public function getFeaturedImageUrlAttribute()
+    {
+        if (!$this->featured_image) {
+            return null;
+        }
+
+        // Fix: Check the correct config key
+        if (config('filesystems.default') === 's3') {
+            return Storage::disk('s3')->url($this->featured_image);
+        }
+
+        // Fallback to local asset
+        return asset($this->featured_image);
+    }
 
     protected static function boot()
     {
