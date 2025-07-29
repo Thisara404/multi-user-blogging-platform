@@ -1,7 +1,7 @@
 export class NavbarManager {
     constructor() {
         this.lastScrollY = 0;
-        this.navbar = document.getElementById('navbar');
+        this.navbar = document.getElementById("navbar");
         this.ticking = false;
         this.init();
     }
@@ -36,33 +36,61 @@ export class NavbarManager {
 
     //     this.lastScrollY = currentScrollY;
     // }
- function updateNavbar() {
-            const currentScrollY = window.scrollY;
+        updateNavbar() {
+        const currentScrollY = window.scrollY;
 
-            if (currentScrollY > 50) {
-                navbar.classList.add('bg-white/95', 'backdrop-blur-md', 'shadow-xl');
-                navbar.classList.remove('bg-transparent');
+        if (currentScrollY > 50) {
+            navbar.classList.add(
+                "bg-white/95",
+                "backdrop-blur-md",
+                "shadow-xl"
+            );
+            navbar.classList.remove("bg-transparent");
 
-                // Apply gradient text for nav links and logo
-                navbar.querySelectorAll('.nav-link, h1').forEach(el => {
-                    el.classList.add('bg-gradient-to-r', 'from-blue-500', 'to-purple-600', 'bg-clip-text', 'text-transparent');
-                    el.classList.remove('text-white', 'text-white/80', '!text-gray-900');
-                });
-            } else {
-                navbar.classList.remove('bg-white/95', 'backdrop-blur-md', 'shadow-xl');
-                navbar.classList.add('bg-transparent');
+            // Apply gradient text for nav links and logo
+            navbar.querySelectorAll(".nav-link, h1").forEach((el) => {
+                el.classList.add(
+                    "bg-gradient-to-r",
+                    "from-blue-500",
+                    "to-purple-600",
+                    "bg-clip-text",
+                    "text-transparent"
+                );
+                el.classList.remove(
+                    "text-white",
+                    "text-white/80",
+                    "!text-gray-900"
+                );
+            });
+        } else {
+            navbar.classList.remove(
+                "bg-white/95",
+                "backdrop-blur-md",
+                "shadow-xl"
+            );
+            navbar.classList.add("bg-transparent");
 
-                // Restore gradient text for nav links and logo
-                navbar.querySelectorAll('.nav-link, h1').forEach(el => {
-                    el.classList.add('bg-gradient-to-r', 'from-blue-500', 'to-pink-500', 'bg-clip-text', 'text-transparent');
-                    el.classList.remove('text-white', 'text-white/80', '!text-gray-900');
-                });
-            }
-
-            lastScrollY = currentScrollY;
+            // Restore gradient text for nav links and logo
+            navbar.querySelectorAll(".nav-link, h1").forEach((el) => {
+                el.classList.add(
+                    "bg-gradient-to-r",
+                    "from-blue-500",
+                    "to-pink-500",
+                    "bg-clip-text",
+                    "text-transparent"
+                );
+                el.classList.remove(
+                    "text-white",
+                    "text-white/80",
+                    "!text-gray-900"
+                );
+            });
         }
+
+        lastScrollY = currentScrollY;
+    }
     setupScrollListener() {
-        window.addEventListener('scroll', () => {
+        window.addEventListener("scroll", () => {
             if (!this.ticking) {
                 requestAnimationFrame(() => {
                     this.updateNavbar();
@@ -74,18 +102,21 @@ export class NavbarManager {
     }
 
     setupSmoothScrolling() {
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
+        document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+            anchor.addEventListener("click", function (e) {
                 e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
+                const target = document.querySelector(
+                    this.getAttribute("href")
+                );
                 if (target) {
                     const headerOffset = 80;
                     const elementPosition = target.getBoundingClientRect().top;
-                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                    const offsetPosition =
+                        elementPosition + window.pageYOffset - headerOffset;
 
                     window.scrollTo({
                         top: offsetPosition,
-                        behavior: 'smooth'
+                        behavior: "smooth",
                     });
                 }
             });
