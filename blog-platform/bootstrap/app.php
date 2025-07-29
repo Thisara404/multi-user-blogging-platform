@@ -17,6 +17,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'force.https' => \App\Http\Middleware\ForceHttps::class,
         ]);
 
+        // Trust proxies for Railway
+        $middleware->trustProxies(at: '*');
+
         // Apply ForceHttps middleware to web routes in production
         if (env('APP_ENV') === 'production') {
             $middleware->web([\App\Http\Middleware\ForceHttps::class]);
