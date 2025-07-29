@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Facades\Log;
 
 class SocialiteController extends Controller
 {
@@ -44,14 +45,14 @@ class SocialiteController extends Controller
                 ]);
 
                 Auth::login($user);
-                return redirect()->intended('dashboard');
+                return redirect()->intended(route('blog.index')); // ✅ Fixed
             }
 
             // Check if user exists with same email
             $existingUser = User::where('email', $socialUser->getEmail())->first();
 
             if ($existingUser) {
-                // Link this provider to existing account
+                // Link provider to existing account
                 $existingUser->update([
                     'provider' => $provider,
                     'provider_id' => $socialUser->getId(),
@@ -60,7 +61,7 @@ class SocialiteController extends Controller
                 ]);
 
                 Auth::login($existingUser);
-                return redirect()->intended('dashboard');
+                return redirect()->intended(route('blog.index')); // ✅ Fixed
             }
 
             // Create new user
@@ -79,9 +80,10 @@ class SocialiteController extends Controller
             $user->assignRole('reader');
 
             Auth::login($user);
-            return redirect()->intended('dashboard');
+            return redirect()->intended(route('blog.index')); // ✅ Fixed
 
         } catch (\Exception $e) {
+            \Log::error('OAuth error: ' . $e->getMessage(), ['exception' => $e]);
             return redirect()->route('login')->withErrors(['error' => 'Authentication failed. Please try again.']);
         }
     }

@@ -7,55 +7,210 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+# BlogSphere - Multi-User Blogging Platform
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+A fully functional multi-user blogging platform built with Laravel 12, featuring role-based access control, OAuth authentication, and modern UI.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Features
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 🔐 Authentication & Authorization
+- **OAuth Integration**: Login with Google & GitHub using Laravel Socialite
+- **Role-Based Access Control**: Admin, Editor, and Reader roles with specific permissions
+- **Secure Registration**: Email verification and password protection
 
-## Learning Laravel
+### 📝 Blog Management
+- **Rich Text Editor**: TinyMCE integration for content creation
+- **Image Upload**: Automatic image resizing and optimization
+- **Categories & Tags**: Organize content with customizable categories and tags
+- **Post States**: Draft, Published, and Archived statuses
+- **SEO Friendly**: Slug-based URLs and meta tags
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 💬 Engagement Features
+- **Comments System**: Nested comments with moderation
+- **Like & Save**: Users can like and bookmark posts
+- **View Tracking**: Post view counters
+- **User Interaction**: Follow authors and save favorite posts
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### 👥 User Management
+- **Admin Dashboard**: Comprehensive user and content management
+- **Role Assignment**: Dynamic role management for users
+- **Content Moderation**: Comment approval and rejection system
+- **User Profiles**: Avatar support with OAuth integration
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Tech Stack
 
-## Laravel Sponsors
+- **Backend**: Laravel 12 with Eloquent ORM
+- **Frontend**: Blade templates with Tailwind CSS
+- **Authentication**: Laravel Breeze + Socialite (Google, GitHub)
+- **Database**: MySQL with comprehensive migrations
+- **Image Processing**: Intervention Image with GD driver
+- **Permissions**: Spatie Laravel Permissions
+- **Rich Text**: TinyMCE Editor
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Installation
 
-### Premium Partners
+1. **Clone the repository**
+```bash
+git clone <repository-url>
+cd blog-platform
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+2. **Install dependencies**
+```bash
+composer install
+npm install
+```
+
+3. **Environment setup**
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+
+4. **Database configuration**
+```bash
+# Update .env with your database credentials
+php artisan migrate
+php artisan db:seed --class=RolePermissionSeeder
+php artisan db:seed --class=BlogSeeder
+```
+
+5. **OAuth setup**
+```bash
+# Add to .env file:
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+GOOGLE_REDIRECT_URI=http://localhost:8000/auth/google/callback
+
+GITHUB_CLIENT_ID=your_github_client_id
+GITHUB_CLIENT_SECRET=your_github_client_secret
+GITHUB_REDIRECT_URI=http://localhost:8000/auth/github/callback
+```
+
+6. **Build assets and start server**
+```bash
+npm run build
+php artisan serve
+```
+
+## Usage
+
+### Default Accounts
+- **Admin**: admin@blog.com / password
+- **Editor**: editor@blog.com / password
+
+### Creating Posts
+1. Login with admin or editor account
+2. Navigate to "Create Post" 
+3. Fill in title, content, category, and tags
+4. Choose to save as draft or publish
+5. Upload featured image (optional)
+
+### OAuth Login
+1. Click "Login with Google" or "Login with GitHub"
+2. Authorize the application
+3. Automatically assigned "reader" role
+4. Access blog reading and commenting features
+
+## Permissions
+
+### Admin Role
+- Full access to all features
+- User management and role assignment
+- Content moderation and deletion
+- System administration
+
+### Editor Role
+- Create, edit, and delete own posts
+- Moderate comments
+- Publish content
+- View analytics
+
+### Reader Role
+- View published posts
+- Comment on posts
+- Like and save posts
+- Basic user interactions
+
+## API Endpoints
+
+### Authentication
+- `GET /auth/google` - Google OAuth
+- `GET /auth/github` - GitHub OAuth
+- `POST /login` - Standard login
+- `POST /register` - User registration
+
+### Blog
+- `GET /blog` - All posts
+- `GET /blog/{slug}` - Single post
+- `POST /posts` - Create post (auth required)
+- `PUT /posts/{post}` - Update post (auth required)
+- `DELETE /posts/{post}` - Delete post (auth required)
+
+### Interactions
+- `POST /posts/{post}/like` - Toggle like
+- `POST /posts/{post}/save` - Toggle save
+- `POST /posts/{post}/comments` - Add comment
+
+## File Structure
+
+```
+blog-platform/
+├── app/
+│   ├── Http/Controllers/
+│   │   ├── Auth/SocialiteController.php
+│   │   ├── PostController.php
+│   │   └── CommentController.php
+│   ├── Models/
+│   │   ├── User.php
+│   │   ├── Post.php
+│   │   └── Comment.php
+│   └── Policies/
+│       └── PostPolicy.php
+├── database/
+│   ├── migrations/
+│   └── seeders/
+├── resources/
+│   ├── views/
+│   │   ├── blog/
+│   │   ├── posts/
+│   │   └── auth/
+│   ├── css/
+│   └── js/
+└── routes/
+    ├── web.php
+    └── auth.php
+```
+
+## Deployment
+
+### Railway (Recommended)
+```bash
+npm install -g @railway/cli
+railway login
+railway init
+railway up
+```
+
+### Heroku
+```bash
+heroku create your-app-name
+git push heroku main
+heroku run php artisan migrate --seed
+```
 
 ## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Write tests if applicable
+5. Submit a pull request
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## Support
+
+For support and questions, please open an issue in the repository.

@@ -15,25 +15,23 @@ export class NavbarManager {
         const currentScrollY = window.scrollY;
 
         if (currentScrollY > 50) {
-            this.navbar.classList.add('bg-white/95', 'backdrop-blur-md', 'shadow-xl');
+            this.navbar.classList.add('bg-gradient-to-r', 'from-orange-900', 'via-yellow-700', 'to-orange-500', 'backdrop-blur-md', 'shadow-xl');
             this.navbar.classList.remove('bg-transparent');
 
-            // Update text colors for better contrast
+            // Update text colors for better contrast using gradient-like classes
             this.navbar.querySelectorAll('.nav-link, h1').forEach(el => {
-                el.classList.add('!text-gray-900');
-                el.classList.remove('text-white', 'text-white/80');
+                el.classList.add('text-transparent', 'bg-clip-text', 'bg-gradient-to-r', 'from-yellow-300', 'to-orange-700');
+                el.classList.remove('text-white', 'text-white/80', '!text-gray-900');
             });
         } else {
-            this.navbar.classList.remove('bg-white/95', 'backdrop-blur-md', 'shadow-xl');
+            this.navbar.classList.remove('bg-gradient-to-r', 'from-orange-900', 'via-yellow-700', 'to-orange-500', 'backdrop-blur-md', 'shadow-xl');
             this.navbar.classList.add('bg-transparent');
 
-            // Restore original colors
-            this.navbar.querySelectorAll('.nav-link').forEach(el => {
-                el.classList.remove('!text-gray-900');
-                el.classList.add('text-white/80');
+            // Restore original gradient text colors
+            this.navbar.querySelectorAll('.nav-link, h1').forEach(el => {
+                el.classList.remove('text-transparent', 'bg-clip-text', 'bg-gradient-to-r', 'from-yellow-300', 'to-orange-700', '!text-gray-900');
+                el.classList.add('text-transparent', 'bg-clip-text', 'bg-gradient-to-r', 'from-orange-400', 'to-yellow-500');
             });
-            this.navbar.querySelector('h1').classList.remove('!text-gray-900');
-            this.navbar.querySelector('h1').classList.add('text-white');
         }
 
         this.lastScrollY = currentScrollY;

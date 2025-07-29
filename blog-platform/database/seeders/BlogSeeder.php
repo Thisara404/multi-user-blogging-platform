@@ -15,7 +15,7 @@ class BlogSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create categories
+        // Create categories (use firstOrCreate to avoid duplicates)
         $categories = [
             ['name' => 'Technology', 'description' => 'All about tech trends and innovations', 'color' => '#3B82F6'],
             ['name' => 'Lifestyle', 'description' => 'Tips for a better life', 'color' => '#10B981'],
@@ -24,17 +24,17 @@ class BlogSeeder extends Seeder
         ];
 
         foreach ($categories as $category) {
-            Category::create($category);
+            Category::firstOrCreate(['name' => $category['name']], $category);
         }
 
-        // Create tags
+        // Create tags (use firstOrCreate to avoid duplicates)
         $tags = [
             'Laravel', 'PHP', 'JavaScript', 'Vue.js', 'React', 'Programming',
             'Tutorial', 'Tips', 'Review', 'Guide', 'News', 'Opinion'
         ];
 
         foreach ($tags as $tag) {
-            Tag::create(['name' => $tag]);
+            Tag::firstOrCreate(['name' => $tag]);
         }
 
         // Create admin user if doesn't exist
@@ -46,7 +46,9 @@ class BlogSeeder extends Seeder
                 'email_verified_at' => now(),
             ]
         );
-        $adminUser->assignRole('admin');
+        if (!$adminUser->hasRole('admin')) {
+            $adminUser->assignRole('admin');
+        }
 
         // Create editor user if doesn't exist
         $editorUser = User::firstOrCreate(
@@ -57,35 +59,40 @@ class BlogSeeder extends Seeder
                 'email_verified_at' => now(),
             ]
         );
-        $editorUser->assignRole('editor');
+        if (!$editorUser->hasRole('editor')) {
+            $editorUser->assignRole('editor');
+        }
 
-        // Create some sample posts
-        $posts = [
-            [
-                'title' => 'Getting Started with Laravel 10',
-                'excerpt' => 'A comprehensive guide to building web applications with Laravel 10.',
-                'content' => '<p>Laravel 10 brings many exciting features...</p>',
-                'status' => 'published',
-                'published_at' => now(),
-                'author_id' => $adminUser->id,
-                'category_id' => 1,
-            ],
-            [
-                'title' => 'The Future of Web Development',
-                'excerpt' => 'Exploring trends and technologies shaping the future.',
-                'content' => '<p>Web development is constantly evolving...</p>',
-                'status' => 'published',
-                'published_at' => now()->subDays(1),
-                'author_id' => $editorUser->id,
-                'category_id' => 1,
-            ],
-        ];
+        // Create some sample posts (only if they don't exist)
+        if (Post::count() === 0) {
+            $posts = [
+                [
+                    'title' => 'Getting Started with Laravel 10',
+                    'excerpt' => 'A comprehensive guide to building web applications with Laravel 10.',
+                    'content' => '<p>Laravel 10 brings many exciting features...</p>',
+                    'status' => 'published',
+                    'published_at' => now(),
+                    'author_id' => $adminUser->id,
+                    'category_id' => Category::where('name', 'Technology')->first()->id,
+                ],
+                [
+                    'title' => 'The Future of Web Development',
+                    'excerpt' => 'Exploring trends and technologies shaping the future.',
+                    'content' => '<p>Web development is constantly evolving...</p>',
+                    'status' => 'published',
+                    'published_at' => now()->subDays(1),
+                    'author_id' => $editorUser->id,
+                    'category_id' => Category::where('name', 'Technology')->first()->id,
+                ],
+            ];
 
-        foreach ($posts as $postData) {
-            $post = Post::create($postData);
+            foreach ($posts as $postData) {
+                $post = Post::create($postData);
 
-            // Attach some tags
-            $post->tags()->attach([1, 2, 6]); // Laravel, PHP, Programming
+                // Attach some tags
+                $tagIds = Tag::whereIn('name', ['Laravel', 'PHP', 'Programming'])->pluck('id');
+                $post->tags()->attach($tagIds);
+            }
         }
     }
 }

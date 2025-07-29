@@ -82,7 +82,7 @@
                                     d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" />
                             </svg>
                         </div>
-                        <h1 class="text-xl font-bold text-white tracking-tight">BlogSphere</h1>
+                        <h1 class="text-xl font-bold text-gray-900 tracking-tight">BlogSphere</h1>
                     </div>
                 </div>
 
@@ -891,7 +891,7 @@
                             class="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-700 transition-all duration-300">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                                 <path
-                                    d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                                    d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24
                             </svg>
                         </a>
                         <a href="#"
@@ -978,22 +978,20 @@
                 navbar.classList.add('bg-white/95', 'backdrop-blur-md', 'shadow-xl');
                 navbar.classList.remove('bg-transparent');
 
-                // Update text colors for better contrast
+                // Apply gradient text for nav links and logo
                 navbar.querySelectorAll('.nav-link, h1').forEach(el => {
-                    el.classList.add('!text-gray-900');
-                    el.classList.remove('text-white', 'text-white/80');
+                    el.classList.add('bg-gradient-to-r', 'from-blue-500', 'to-purple-600', 'bg-clip-text', 'text-transparent');
+                    el.classList.remove('text-white', 'text-white/80', '!text-gray-900');
                 });
             } else {
                 navbar.classList.remove('bg-white/95', 'backdrop-blur-md', 'shadow-xl');
                 navbar.classList.add('bg-transparent');
 
-                // Restore original colors
-                navbar.querySelectorAll('.nav-link').forEach(el => {
-                    el.classList.remove('!text-gray-900');
-                    el.classList.add('text-white/80');
+                // Restore gradient text for nav links and logo
+                navbar.querySelectorAll('.nav-link, h1').forEach(el => {
+                    el.classList.add('bg-gradient-to-r', 'from-blue-500', 'to-pink-500', 'bg-clip-text', 'text-transparent');
+                    el.classList.remove('text-white', 'text-white/80', '!text-gray-900');
                 });
-                navbar.querySelector('h1').classList.remove('!text-gray-900');
-                navbar.querySelector('h1').classList.add('text-white');
             }
 
             lastScrollY = currentScrollY;

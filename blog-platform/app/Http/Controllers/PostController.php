@@ -9,7 +9,8 @@ use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-use Intervention\Image\Laravel\Facades\Image;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class PostController extends Controller
@@ -88,7 +89,8 @@ class PostController extends Controller
             }
 
             // Resize and save image
-            $resizedImage = Image::read($image)->resize(800, 600, function ($constraint) {
+            $manager = new ImageManager(new Driver());
+            $resizedImage = $manager->read($image)->resize(800, 600, function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize();
             });
@@ -116,7 +118,14 @@ class PostController extends Controller
         // Increment view count
         $post->increment('views_count');
 
-        $post->load(['author', 'category', 'tags', 'approvedComments.user.replies']);
+        $post->load([
+            'author',
+            'category',
+            'tags',
+            'approvedComments' => function ($query) {
+                $query->whereNull('parent_id')->with(['user', 'replies.user']);
+            }
+        ]);
 
         // Check if user has liked or saved this post
         $hasLiked = Auth::check() ? $post->likes()->where('user_id', Auth::id())->exists() : false;
@@ -173,7 +182,8 @@ class PostController extends Controller
             $image = $request->file('featured_image');
             $filename = time() . '.' . $image->getClientOriginalExtension();
 
-            $resizedImage = Image::read($image)->resize(800, 600, function ($constraint) {
+            $manager = new ImageManager(new Driver());
+            $resizedImage = $manager->read($image)->resize(800, 600, function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize();
             });

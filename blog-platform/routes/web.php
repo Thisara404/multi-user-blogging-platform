@@ -48,8 +48,8 @@ Route::middleware('auth')->group(function () {
     });
 
     // Likes and Saves
-    Route::middleware('permission:like posts')->post('/posts/{post}/like', [PostController::class, 'toggleLike'])->name('posts.like');
-    Route::middleware('permission:save posts')->post('/posts/{post}/save', [PostController::class, 'toggleSave'])->name('posts.save');
+    Route::middleware('permission:like posts')->post('/posts/{post:id}/like', [PostController::class, 'toggleLike'])->name('posts.like');
+    Route::middleware('permission:save posts')->post('/posts/{post:id}/save', [PostController::class, 'toggleSave'])->name('posts.save');
 });
 
 // Admin routes

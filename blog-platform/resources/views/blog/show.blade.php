@@ -1,22 +1,3 @@
-``````blade
-``````blade
-````blade
-````blade
-````blade
-````blade
-````blade
-````blade
-````blade
-````blade
-````blade
-````blade
-````blade
-````blade
-````blade
-````blade
-````blade
-````blade
-````blade
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between items-center">
@@ -64,25 +45,24 @@
                     <div class="flex items-center justify-between border-t border-gray-200 pt-6 mb-6">
                         <div class="flex items-center space-x-6 text-sm text-gray-500">
                             <span>👀 {{ $post->views_count }} views</span>
+                            <span>💬 {{ $post->approvedComments->count() }} comments</span>
                             <span>❤️ <span id="likes-count">{{ $post->likes_count }}</span> likes</span>
-                            <span>💬 {{ $post->comments_count }} comments</span>
                         </div>
 
                         @auth
-                            <!-- Like/Save buttons -->
-                            <div class="flex items-center space-x-4">
+                            <div class="flex space-x-3">
                                 <button onclick="toggleLike({{ $post->id }})"
                                         class="flex items-center space-x-2 px-4 py-2 rounded-lg {{ $hasLiked ? 'bg-red-100 text-red-600' : 'bg-gray-100 text-gray-600' }} hover:bg-opacity-80 transition-colors">
-                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path>
                                     </svg>
                                     <span id="like-text">{{ $hasLiked ? 'Unlike' : 'Like' }}</span>
                                 </button>
 
                                 <button onclick="toggleSave({{ $post->id }})"
                                         class="flex items-center space-x-2 px-4 py-2 rounded-lg {{ $hasSaved ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-600' }} hover:bg-opacity-80 transition-colors">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z"></path>
                                     </svg>
                                     <span id="save-text">{{ $hasSaved ? 'Unsave' : 'Save' }}</span>
                                 </button>
@@ -282,4 +262,3 @@
     </script>
     @endpush
 </x-app-layout>
-`````
