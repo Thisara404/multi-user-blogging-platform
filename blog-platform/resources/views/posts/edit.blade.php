@@ -89,9 +89,9 @@ use Illuminate\Support\Facades\Storage;
                             @if($post->featured_image)
                                 <div class="mt-4">
                                     <p class="text-sm text-gray-600">Current Image:</p>
-                                    <img src="{{ Storage::disk('s3')->url($post->featured_image) }}"
-                                         alt="Current featured image"
-                                         class="mt-2 w-48 h-auto rounded-md">
+                                    <img src="{{ $post->featured_image_url }}"
+                                         alt="{{ $post->title }}"
+                                         class="w-full h-64 object-cover">
                                 </div>
                             @endif
                             @error('featured_image')

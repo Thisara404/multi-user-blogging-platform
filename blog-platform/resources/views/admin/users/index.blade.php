@@ -95,8 +95,8 @@ use Illuminate\Support\Facades\Storage;
     </div>
 
     @if($post->featured_image)
-        <img src="{{ Storage::disk('s3')->url($post->featured_image) }}"
+        <img src="{{ $post->featured_image_url }}"
              alt="{{ $post->title }}"
-             class="w-full h-48 object-cover">
+             class="w-full h-64 object-cover">
     @endif
 </x-app-layout>

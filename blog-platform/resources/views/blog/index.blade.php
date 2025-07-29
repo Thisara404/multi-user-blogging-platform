@@ -25,9 +25,9 @@
                 @forelse($posts as $post)
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         @if($post->featured_image)
-                            <img src="{{ asset($post->featured_image) }}"
+                            <img src="{{ $post->featured_image_url }}"
                                  alt="{{ $post->title }}"
-                                 class="w-full h-48 object-cover">
+                                 class="w-full h-64 object-cover">
                         @endif
 
                         <div class="p-6">
