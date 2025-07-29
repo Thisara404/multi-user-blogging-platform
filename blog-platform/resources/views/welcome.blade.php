@@ -21,24 +21,23 @@
 
     <style>
         @keyframes glow {
-
             0%,
             100% {
-                box-shadow: 0 0 20px rgba(168, 85, 247, 0.4), 0 0 40px rgba(59, 130, 246, 0.3);
+                box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
             }
 
             50% {
-                box-shadow: 0 0 30px rgba(236, 72, 153, 0.5), 0 0 60px rgba(139, 92, 246, 0.4);
+                box-shadow: 0 0 30px rgba(102, 126, 234, 0.8), 0 0 40px rgba(118, 75, 162, 0.5);
             }
         }
 
         @keyframes shimmer {
             0% {
-                transform: translateX(-100%);
+                background-position: -200px 0;
             }
 
             100% {
-                transform: translateX(100%);
+                background-position: calc(200px + 100%) 0;
             }
         }
 
@@ -46,11 +45,11 @@
 
             0%,
             100% {
-                transform: translateY(0px);
+                transform: translateY(0px) rotate(0deg);
             }
 
             50% {
-                transform: translateY(-10px);
+                transform: translateY(-20px) rotate(3deg);
             }
         }
 
@@ -90,27 +89,50 @@
                 <!-- Navigation Links -->
                 <div class="hidden md:block">
                     <div class="ml-10 flex items-baseline space-x-8">
-                        <a href="#features"
-                            class="nav-link text-white/80 hover:text-white px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-purple-500/20 hover:backdrop-blur-sm">Features</a>
-                        <a href="#about"
-                            class="nav-link text-white/80 hover:text-white px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-purple-500/20 hover:backdrop-blur-sm">About</a>
-                        <a href="#explore"
-                            class="nav-link text-white/80 hover:text-white px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-purple-500/20 hover:backdrop-blur-sm">Explore</a>
-                        <a href="#pricing"
-                            class="nav-link text-white/80 hover:text-white px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-purple-500/20 hover:backdrop-blur-sm">Pricing</a>
+                        <a href="{{ route('blog.index') }}"
+                            class="nav-link text-white/80 hover:text-white px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-purple-500/20 hover:backdrop-blur-sm">All Posts</a>
+                        @auth
+                            <a href="{{ route('posts.create') }}"
+                                class="nav-link text-white/80 hover:text-white px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-purple-500/20 hover:backdrop-blur-sm">Write</a>
+                            <a href="{{ route('dashboard') }}"
+                                class="nav-link text-white/80 hover:text-white px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-purple-500/20 hover:backdrop-blur-sm">Dashboard</a>
+                            @hasrole('admin')
+                                <a href="{{ route('admin.dashboard') }}"
+                                    class="nav-link text-white/80 hover:text-white px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-purple-500/20 hover:backdrop-blur-sm">Admin</a>
+                            @endhasrole
+                        @else
+                            <a href="#features"
+                                class="nav-link text-white/80 hover:text-white px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-purple-500/20 hover:backdrop-blur-sm">Features</a>
+                            <a href="#pricing"
+                                class="nav-link text-white/80 hover:text-white px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-purple-500/20 hover:backdrop-blur-sm">Pricing</a>
+                        @endauth
                     </div>
                 </div>
 
                 <!-- Auth Links -->
                 <div class="flex items-center space-x-4">
-                    <a href="#login"
-                        class="text-white/80 hover:text-white px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-white/10">
-                        Sign In
-                    </a>
-                    <a href="#register"
-                        class="bg-white text-blue-600 hover:bg-gray-100 px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
-                        Get Started Free
-                    </a>
+                    @auth
+                        <a href="{{ route('dashboard') }}"
+                            class="text-white/80 hover:text-white px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-white/10">
+                            My Account
+                        </a>
+                        <form method="POST" action="{{ route('logout') }}" class="inline">
+                            @csrf
+                            <button type="submit"
+                                class="bg-white text-blue-600 hover:bg-gray-100 px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
+                                Logout
+                            </button>
+                        </form>
+                    @else
+                        <a href="{{ route('login') }}"
+                            class="text-white/80 hover:text-white px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-white/10">
+                            Sign In
+                        </a>
+                        <a href="{{ route('register') }}"
+                            class="bg-white text-blue-600 hover:bg-gray-100 px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
+                            Get Started Free
+                        </a>
+                    @endauth
                 </div>
             </div>
         </div>
@@ -162,17 +184,30 @@
 
                     <div
                         class="mt-12 sm:flex sm:justify-center lg:justify-start space-y-4 sm:space-y-0 sm:space-x-6 animate-slide-up">
-                        <a href="#register"
-                            class="group w-full sm:w-auto flex items-center justify-center px-10 py-4 border border-transparent text-lg font-semibold rounded-full text-blue-600 bg-white hover:bg-gray-50 transition-all duration-300 shadow-2xl hover:shadow-3xl transform hover:scale-105">
-                            Start Writing Today
-                            <svg class="ml-3 w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300"
-                                fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd"
-                                    d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                        </a>
-                        <a href="#explore"
+                        @auth
+                            <a href="{{ route('posts.create') }}"
+                                class="group w-full sm:w-auto flex items-center justify-center px-10 py-4 border border-transparent text-lg font-semibold rounded-full text-blue-600 bg-white hover:bg-gray-50 transition-all duration-300 shadow-2xl hover:shadow-3xl transform hover:scale-105">
+                                Start Writing Today
+                                <svg class="ml-3 w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300"
+                                    fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </a>
+                        @else
+                            <a href="{{ route('register') }}"
+                                class="group w-full sm:w-auto flex items-center justify-center px-10 py-4 border border-transparent text-lg font-semibold rounded-full text-blue-600 bg-white hover:bg-gray-50 transition-all duration-300 shadow-2xl hover:shadow-3xl transform hover:scale-105">
+                                Start Writing Today
+                                <svg class="ml-3 w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300"
+                                    fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </a>
+                        @endauth
+                        <a href="{{ route('blog.index') }}"
                             class="group w-full sm:w-auto flex items-center justify-center px-10 py-4 border-2 border-blue-200/80 text-lg font-semibold rounded-full bg-gradient-to-r from-blue-400 via-pink-400 to-orange-400 bg-clip-text text-transparent hover:from-blue-300 hover:via-pink-300 hover:to-orange-300 hover:bg-gradient-to-r hover:bg-blue-500/20 transition-all duration-300 backdrop-blur-sm hover:border-pink-200 shadow-lg hover:shadow-pink-500/25">
                             <svg class="mr-3 w-5 h-5 text-blue-300 group-hover:text-pink-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -180,7 +215,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                             </svg>
-                            Explore Stories
+                            Explore Posts
                         </a>
                     </div>
 
@@ -188,7 +223,7 @@
                     <div class="mt-16 grid grid-cols-3 gap-8 animate-fade-in">
                         <div class="text-center lg:text-left">
                             <div
-                                class="text-4xl font-bold bg-gradient-to-r from-yellow-300 to-orange-400 bg-clip-text text-transparent mb-1">
+                                class="text-4xl font-bold bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent mb-1">
                                 50K+</div>
                             <div class="text-blue-200 text-sm font-medium">Active Writers</div>
                             <div class="w-full bg-white/20 h-1 rounded-full mt-2">
@@ -672,69 +707,68 @@
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                            </svg>
-                        </div>
-                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Enterprise</h3>
-                        <div class="flex items-baseline justify-center mb-2">
-                            <span class="text-5xl font-extrabold text-gray-900">$99</span>
-                            <span class="text-lg text-gray-500 ml-2">/month</span>
-                        </div>
-                        <p class="text-gray-600">For large organizations</p>
+                        </svg>
                     </div>
-
-                    <ul class="space-y-4 mb-8">
-                        <li class="flex items-center">
-                            <div class="w-5 h-5 bg-gray-100 rounded-full flex items-center justify-center mr-3">
-                                <svg class="w-3 h-3 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                        clip-rule="evenodd" />
-                            </div>
-                            <span class="text-gray-700">Everything in Professional</span>
-                        </li>
-                        <li class="flex items-center">
-                            <div class="w-5 h-5 bg-gray-100 rounded-full flex items-center justify-center mr-3">
-                                <svg class="w-3 h-3 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                        clip-rule="evenodd" />
-                            </div>
-                            <span class="text-gray-700">Multi-author collaboration</span>
-                        </li>
-                        <li class="flex items-center">
-                            <div class="w-5 h-5 bg-gray-100 rounded-full flex items-center justify-center mr-3">
-                                <svg class="w-3 h-3 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                        clip-rule="evenodd" />
-                            </div>
-                            <span class="text-gray-700">Advanced security features</span>
-                        </li>
-                        <li class="flex items-center">
-                            <div class="w-5 h-5 bg-gray-100 rounded-full flex items-center justify-center mr-3">
-                                <svg class="w-3 h-3 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                        clip-rule="evenodd" />
-                            </div>
-                            <span class="text-gray-700">Dedicated account manager</span>
-                        </li>
-                        <li class="flex items-center">
-                            <div class="w-5 h-5 bg-gray-100 rounded-full flex items-center justify-center mr-3">
-                                <svg class="w-3 h-3 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                        clip-rule="evenodd" />
-                            </div>
-                            <span class="text-gray-700">24/7 phone & chat support</span>
-                        </li>
-                    </ul>
-
-                    <a href="#contact"
-                        class="w-full bg-gray-900 text-white py-4 px-6 rounded-2xl font-semibold hover:bg-gray-800 transition-all duration-300 block text-center transform hover:scale-105">
-                        Contact Sales Team
-                    </a>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Enterprise</h3>
+                    <div class="flex items-baseline justify-center mb-2">
+                        <span class="text-5xl font-extrabold text-gray-900">$99</span>
+                        <span class="text-lg text-gray-500 ml-2">/month</span>
+                    </div>
+                    <p class="text-gray-600">For large organizations</p>
                 </div>
+
+                <ul class="space-y-4 mb-8">
+                    <li class="flex items-center">
+                        <div class="w-5 h-5 bg-gray-100 rounded-full flex items-center justify-center mr-3">
+                            <svg class="w-3 h-3 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clip-rule="evenodd" />
+                        </div>
+                        <span class="text-gray-700">Everything in Professional</span>
+                    </li>
+                    <li class="flex items-center">
+                        <div class="w-5 h-5 bg-gray-100 rounded-full flex items-center justify-center mr-3">
+                            <svg class="w-3 h-3 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clip-rule="evenodd" />
+                        </div>
+                        <span class="text-gray-700">Multi-author collaboration</span>
+                    </li>
+                    <li class="flex items-center">
+                        <div class="w-5 h-5 bg-gray-100 rounded-full flex items-center justify-center mr-3">
+                            <svg class="w-3 h-3 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clip-rule="evenodd" />
+                        </div>
+                        <span class="text-gray-700">Advanced security features</span>
+                    </li>
+                    <li class="flex items-center">
+                        <div class="w-5 h-5 bg-gray-100 rounded-full flex items-center justify-center mr-3">
+                            <svg class="w-3 h-3 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clip-rule="evenodd" />
+                        </div>
+                        <span class="text-gray-700">Dedicated account manager</span>
+                    </li>
+                    <li class="flex items-center">
+                        <div class="w-5 h-5 bg-gray-100 rounded-full flex items-center justify-center mr-3">
+                            <svg class="w-3 h-3 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clip-rule="evenodd" />
+                        </div>
+                        <span class="text-gray-700">24/7 phone & chat support</span>
+                    </li>
+                </ul>
+
+                <a href="#contact"
+                    class="w-full bg-gray-900 text-white py-4 px-6 rounded-2xl font-semibold hover:bg-gray-800 transition-all duration-300 block text-center transform hover:scale-105">
+                    Contact Sales Team
+                </a>
             </div>
         </div>
     </section>

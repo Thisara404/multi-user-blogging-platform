@@ -87,4 +87,70 @@
             </div>
         </div>
     </div>
+
+    <!-- Comment Moderation Section (Only for Admins) -->
+    @can('moderate comments')
+        <div class="py-12 bg-gray-50">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight mb-6">
+                    Moderate Comments
+                </h2>
+
+                @if($comments->count() > 0)
+                    @foreach($comments as $comment)
+                        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-4 p-6">
+                            <div class="flex justify-between items-start">
+                                <div class="flex-1">
+                                    <div class="flex items-center mb-2">
+                                        @if($comment->user->avatar)
+                                            <img src="{{ $comment->user->avatar }}"
+                                                 alt="{{ $comment->user->name }}"
+                                                 class="w-8 h-8 rounded-full mr-3">
+                                        @endif
+                                        <div>
+                                            <h4 class="font-semibold">{{ $comment->user->name }}</h4>
+                                            <p class="text-gray-600 text-sm">
+                                                On: <a href="{{ route('blog.show', $comment->post) }}"
+                                                      class="text-blue-600 hover:text-blue-800">
+                                                    {{ Str::limit($comment->post->title, 50) }}
+                                                </a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <p class="mt-2 text-gray-800">{{ $comment->content }}</p>
+                                    <p class="text-xs text-gray-500 mt-2">
+                                        {{ $comment->created_at->diffForHumans() }}
+                                    </p>
+                                </div>
+                                <div class="flex space-x-2 ml-4">
+                                    <form method="POST" action="{{ route('admin.comments.approve', $comment) }}">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button class="bg-green-500 hover:bg-green-700 text-white px-4 py-2 rounded text-sm">
+                                            Approve
+                                        </button>
+                                    </form>
+                                    <form method="POST" action="{{ route('admin.comments.reject', $comment) }}">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button class="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded text-sm">
+                                            Reject
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+
+                    <div class="mt-6">
+                        {{ $comments->links() }}
+                    </div>
+                @else
+                    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+                        <p class="text-gray-600 text-center">No pending comments to moderate.</p>
+                    </div>
+                @endif
+            </div>
+        </div>
+    @endcan
 </x-app-layout>

@@ -3,26 +3,39 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Comment;
 use App\Models\Category;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Intervention\Image\Laravel\Facades\Image;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class PostController extends Controller
 {
+    use AuthorizesRequests;
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         $posts = Post::with(['author', 'category', 'tags'])
-                    ->published()
-                    ->latest('published_at')
-                    ->paginate(12);
+            ->published()
+            ->latest('published_at')
+            ->paginate(12);
 
-        return view('blog.index', compact('posts'));
+        // Get pending comments for moderation (only for users who can moderate)
+        $comments = collect();
+        if (Auth::check() && Auth::user()->can('moderate comments')) {
+            $comments = Comment::with(['post', 'user'])
+                ->where('status', 'pending')
+                ->latest()
+                ->paginate(10);
+        }
+
+        return view('blog.index', compact('posts', 'comments'));
     }
 
     /**
@@ -63,10 +76,16 @@ class PostController extends Controller
             $validated['published_at'] = now();
         }
 
-        // Handle image upload
+        // Handle image upload with resizing
         if ($request->hasFile('featured_image')) {
             $image = $request->file('featured_image');
             $filename = time() . '.' . $image->getClientOriginalExtension();
+
+            // Create directory if it doesn't exist
+            $uploadPath = public_path('images/posts');
+            if (!file_exists($uploadPath)) {
+                mkdir($uploadPath, 0755, true);
+            }
 
             // Resize and save image
             $resizedImage = Image::read($image)->resize(800, 600, function ($constraint) {
@@ -86,7 +105,7 @@ class PostController extends Controller
         }
 
         return redirect()->route('blog.show', $post)
-                        ->with('success', 'Post created successfully!');
+            ->with('success', 'Post created successfully!');
     }
 
     /**
@@ -97,7 +116,7 @@ class PostController extends Controller
         // Increment view count
         $post->increment('views_count');
 
-        $post->load(['author', 'category', 'tags', 'approvedComments.user']);
+        $post->load(['author', 'category', 'tags', 'approvedComments.user.replies']);
 
         // Check if user has liked or saved this post
         $hasLiked = Auth::check() ? $post->likes()->where('user_id', Auth::id())->exists() : false;
@@ -169,7 +188,7 @@ class PostController extends Controller
         $post->tags()->sync($validated['tags'] ?? []);
 
         return redirect()->route('blog.show', $post)
-                        ->with('success', 'Post updated successfully!');
+            ->with('success', 'Post updated successfully!');
     }
 
     /**
@@ -187,7 +206,7 @@ class PostController extends Controller
         $post->delete();
 
         return redirect()->route('blog.index')
-                        ->with('success', 'Post deleted successfully!');
+            ->with('success', 'Post deleted successfully!');
     }
 
     public function toggleLike(Post $post)

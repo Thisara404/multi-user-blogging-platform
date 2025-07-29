@@ -1,3 +1,6 @@
+``````blade
+``````blade
+````blade
 ````blade
 ````blade
 ````blade
@@ -61,26 +64,25 @@
                     <div class="flex items-center justify-between border-t border-gray-200 pt-6 mb-6">
                         <div class="flex items-center space-x-6 text-sm text-gray-500">
                             <span>👀 {{ $post->views_count }} views</span>
-                            <span>❤️ {{ $post->likes_count }} likes</span>
+                            <span>❤️ <span id="likes-count">{{ $post->likes_count }}</span> likes</span>
                             <span>💬 {{ $post->comments_count }} comments</span>
                         </div>
 
                         @auth
+                            <!-- Like/Save buttons -->
                             <div class="flex items-center space-x-4">
-                                <!-- Like Button -->
                                 <button onclick="toggleLike({{ $post->id }})"
-                                        class="flex items-center space-x-1 {{ $hasLiked ? 'text-red-600' : 'text-gray-500' }} hover:text-red-600">
-                                    <svg class="w-5 h-5" fill="{{ $hasLiked ? 'currentColor' : 'none' }}" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                        class="flex items-center space-x-2 px-4 py-2 rounded-lg {{ $hasLiked ? 'bg-red-100 text-red-600' : 'bg-gray-100 text-gray-600' }} hover:bg-opacity-80 transition-colors">
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                                     </svg>
                                     <span id="like-text">{{ $hasLiked ? 'Unlike' : 'Like' }}</span>
                                 </button>
 
-                                <!-- Save Button -->
                                 <button onclick="toggleSave({{ $post->id }})"
-                                        class="flex items-center space-x-1 {{ $hasSaved ? 'text-blue-600' : 'text-gray-500' }} hover:text-blue-600">
-                                    <svg class="w-5 h-5" fill="{{ $hasSaved ? 'currentColor' : 'none' }}" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
+                                        class="flex items-center space-x-2 px-4 py-2 rounded-lg {{ $hasSaved ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-600' }} hover:bg-opacity-80 transition-colors">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
                                     </svg>
                                     <span id="save-text">{{ $hasSaved ? 'Unsave' : 'Save' }}</span>
                                 </button>
@@ -93,7 +95,7 @@
                         <div class="flex flex-wrap gap-2 mb-8">
                             @foreach($post->tags as $tag)
                                 <a href="{{ route('tag.show', $tag) }}"
-                                   class="inline-block bg-gray-100 hover:bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700">
+                                   class="inline-block bg-gray-100 hover:bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 transition-colors">
                                     #{{ $tag->name }}
                                 </a>
                             @endforeach
@@ -104,8 +106,8 @@
                     @auth
                         @can('comment on posts')
                             <div class="border-t border-gray-200 pt-8">
-                                <h3 class="text-lg font-semibold text-gray-900 mb-4">Leave a Comment</h3>
-                                <form action="{{ route('comments.store', $post) }}" method="POST">
+                                <h3 class="text-lg font-semibold text-gray-900 mb-4">Add Comment</h3>
+                                <form method="POST" action="{{ route('comments.store', $post) }}">
                                     @csrf
                                     <div class="mb-4">
                                         <textarea name="content"
@@ -113,9 +115,6 @@
                                                   class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                                                   placeholder="Write your comment here..."
                                                   required></textarea>
-                                        @error('content')
-                                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                        @enderror
                                     </div>
                                     <button type="submit"
                                             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
@@ -125,60 +124,65 @@
                             </div>
                         @endcan
                     @else
-                        <div class="border-t border-gray-200 pt-8">
-                            <p class="text-gray-600">
-                                <a href="{{ route('login') }}" class="text-blue-600 hover:text-blue-800">Login</a>
-                                to leave a comment.
-                            </p>
+                        <div class="border-t border-gray-200 pt-8 text-center">
+                            <p class="text-gray-600 mb-4">Please log in to leave a comment</p>
+                            <a href="{{ route('login') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                Log In
+                            </a>
                         </div>
                     @endauth
 
                     <!-- Display Comments -->
                     @if($post->approvedComments->count() > 0)
                         <div class="border-t border-gray-200 pt-8 mt-8">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-6">
-                                Comments ({{ $post->approvedComments->count() }})
-                            </h3>
-
+                            <h3 class="text-lg font-semibold text-gray-900 mb-6">Comments ({{ $post->approvedComments->count() }})</h3>
                             @foreach($post->approvedComments->where('parent_id', null) as $comment)
                                 <div class="mb-6 p-4 bg-gray-50 rounded-lg">
-                                    <div class="flex items-center mb-2">
-                                        <strong class="text-gray-900">{{ $comment->user->name }}</strong>
-                                        <span class="text-gray-500 text-sm ml-2">
-                                            {{ $comment->created_at->diffForHumans() }}
-                                        </span>
-                                    </div>
-                                    <p class="text-gray-700">{{ $comment->content }}</p>
+                                    <div class="flex items-start space-x-4">
+                                        @if($comment->user->avatar)
+                                            <img src="{{ $comment->user->avatar }}"
+                                                 alt="{{ $comment->user->name }}"
+                                                 class="w-10 h-10 rounded-full">
+                                        @else
+                                            <div class="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
+                                                <span class="text-gray-600 font-semibold">{{ substr($comment->user->name, 0, 1) }}</span>
+                                            </div>
+                                        @endif
+                                        <div class="flex-1">
+                                            <div class="flex items-center space-x-2 mb-2">
+                                                <h4 class="font-semibold text-gray-900">{{ $comment->user->name }}</h4>
+                                                <span class="text-sm text-gray-500">{{ $comment->created_at->diffForHumans() }}</span>
+                                            </div>
+                                            <p class="text-gray-700">{{ $comment->content }}</p>
 
-                                    <!-- Replies -->
-                                    @if($comment->replies->where('status', 'approved')->count() > 0)
-                                        <div class="ml-6 border-l-2 border-gray-200 pl-4">
-                                            @foreach($comment->replies->where('status', 'approved') as $reply)
-                                                <div class="mb-4 p-3 bg-white rounded">
-                                                    <div class="flex items-center mb-2">
-                                                        @if($reply->user->avatar)
-                                                            <img src="{{ $reply->user->avatar }}"
-                                                                 alt="{{ $reply->user->name }}"
-                                                                 class="w-6 h-6 rounded-full mr-2">
-                                                        @endif
-                                                        <strong class="text-gray-900 text-sm">{{ $reply->user->name }}</strong>
-                                                        <span class="text-gray-500 text-xs ml-2">
-                                                            {{ $reply->created_at->diffForHumans() }}
-                                                        </span>
-                                                    </div>
-                                                    <p class="text-gray-700 text-sm">{{ $reply->content }}</p>
+                                            @auth
+                                                @can('comment on posts')
+                                                    <button onclick="toggleReplyForm({{ $comment->id }})"
+                                                            class="mt-3 text-sm text-blue-600 hover:text-blue-800">
+                                                        Reply
+                                                    </button>
+                                                @endcan
+                                            @endauth
+
+                                            <!-- Replies -->
+                                            @if($comment->replies->where('status', 'approved')->count() > 0)
+                                                <div class="mt-4 ml-6 space-y-4">
+                                                    @foreach($comment->replies->where('status', 'approved') as $reply)
+                                                        <div class="p-3 bg-white rounded border">
+                                                            <div class="flex items-center space-x-2 mb-2">
+                                                                <h5 class="font-medium text-gray-900">{{ $reply->user->name }}</h5>
+                                                                <span class="text-xs text-gray-500">{{ $reply->created_at->diffForHumans() }}</span>
+                                                            </div>
+                                                            <p class="text-gray-700 text-sm">{{ $reply->content }}</p>
+                                                        </div>
+                                                    @endforeach
                                                 </div>
-                                            @endforeach
+                                            @endif
                                         </div>
-                                    @endif
+                                    </div>
 
-                                    <!-- Reply Form -->
                                     @auth
                                         @can('comment on posts')
-                                            <button onclick="toggleReplyForm({{ $comment->id }})"
-                                                    class="text-blue-600 hover:text-blue-800 text-sm font-medium">
-                                                Reply
-                                            </button>
                                             <div id="reply-form-{{ $comment->id }}" class="hidden mt-3 ml-6">
                                                 <form action="{{ route('comments.store', $post) }}" method="POST">
                                                     @csrf
@@ -226,11 +230,22 @@
             })
             .then(response => response.json())
             .then(data => {
+                const likeButton = document.querySelector('button[onclick="toggleLike(' + postId + ')"]');
+                const likeText = document.getElementById('like-text');
+                const likesCount = document.getElementById('likes-count');
+
                 if (data.liked) {
-                    document.getElementById('like-text').textContent = 'Unlike';
+                    likeText.textContent = 'Unlike';
+                    likeButton.className = 'flex items-center space-x-2 px-4 py-2 rounded-lg bg-red-100 text-red-600 hover:bg-opacity-80 transition-colors';
                 } else {
-                    document.getElementById('like-text').textContent = 'Like';
+                    likeText.textContent = 'Like';
+                    likeButton.className = 'flex items-center space-x-2 px-4 py-2 rounded-lg bg-gray-100 text-gray-600 hover:bg-opacity-80 transition-colors';
                 }
+
+                likesCount.textContent = data.likes_count;
+            })
+            .catch(error => {
+                console.error('Error:', error);
             });
         }
 
@@ -244,11 +259,19 @@
             })
             .then(response => response.json())
             .then(data => {
+                const saveButton = document.querySelector('button[onclick="toggleSave(' + postId + ')"]');
+                const saveText = document.getElementById('save-text');
+
                 if (data.saved) {
-                    document.getElementById('save-text').textContent = 'Unsave';
+                    saveText.textContent = 'Unsave';
+                    saveButton.className = 'flex items-center space-x-2 px-4 py-2 rounded-lg bg-blue-100 text-blue-600 hover:bg-opacity-80 transition-colors';
                 } else {
-                    document.getElementById('save-text').textContent = 'Save';
+                    saveText.textContent = 'Save';
+                    saveButton.className = 'flex items-center space-x-2 px-4 py-2 rounded-lg bg-gray-100 text-gray-600 hover:bg-opacity-80 transition-colors';
                 }
+            })
+            .catch(error => {
+                console.error('Error:', error);
             });
         }
 
