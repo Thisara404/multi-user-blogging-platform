@@ -2,6 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Force include all gradient combinations */
+@layer utilities {
+    .gradient-text {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .gradient-bg {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    }
+    
+    .hero-pattern {
+        background-image:
+            radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.1) 2px, transparent 2px),
+            radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.05) 2px, transparent 2px);
+        background-size: 60px 60px;
+    }
+}
+
 /* Custom animations */
 @keyframes glow {
     0%, 100% {

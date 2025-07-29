@@ -37,58 +37,72 @@ export class NavbarManager {
     //     this.lastScrollY = currentScrollY;
     // }
         updateNavbar() {
-        const currentScrollY = window.scrollY;
+            const currentScrollY = window.scrollY;
 
-        if (currentScrollY > 50) {
-            navbar.classList.add(
+            if (currentScrollY > 50) {
+            this.navbar.classList.add(
                 "bg-white/95",
                 "backdrop-blur-md",
                 "shadow-xl"
             );
-            navbar.classList.remove("bg-transparent");
+            this.navbar.classList.remove("bg-transparent");
 
-            // Apply gradient text for nav links and logo
-            navbar.querySelectorAll(".nav-link, h1").forEach((el) => {
+            // Apply gradient text for nav links and logo (no white text)
+            this.navbar.querySelectorAll(".nav-link, h1").forEach((el) => {
                 el.classList.add(
-                    "bg-gradient-to-r",
-                    "from-blue-500",
-                    "to-purple-600",
-                    "bg-clip-text",
-                    "text-transparent"
+                "bg-gradient-to-r",
+                "from-orange-500",
+                "via-pink-500",
+                "to-pink-400",
+                "bg-clip-text",
+                "text-transparent"
                 );
                 el.classList.remove(
-                    "text-white",
-                    "text-white/80",
-                    "!text-gray-900"
+                "text-white",
+                "text-white/80",
+                "!text-gray-900",
+                "hover:text-white",
+                "hover:!text-white",
+                "hover:text-yellow-400",
+                "hover:text-pink-500"
                 );
+                // Add custom hover color (orange and pink)
+                el.classList.add("hover:text-orange-400", "hover:text-pink-400");
             });
-        } else {
-            navbar.classList.remove(
+            } else {
+            this.navbar.classList.remove(
                 "bg-white/95",
                 "backdrop-blur-md",
                 "shadow-xl"
             );
-            navbar.classList.add("bg-transparent");
+            this.navbar.classList.add("bg-transparent");
 
-            // Restore gradient text for nav links and logo
-            navbar.querySelectorAll(".nav-link, h1").forEach((el) => {
+            // Restore gradient text for nav links and logo (no white text)
+            this.navbar.querySelectorAll(".nav-link, h1").forEach((el) => {
                 el.classList.add(
-                    "bg-gradient-to-r",
-                    "from-blue-500",
-                    "to-pink-500",
-                    "bg-clip-text",
-                    "text-transparent"
+                "bg-gradient-to-r",
+                "from-pink-400",
+                "via-orange-400",
+                "to-pink-300",
+                "bg-clip-text",
+                "text-transparent"
                 );
                 el.classList.remove(
-                    "text-white",
-                    "text-white/80",
-                    "!text-gray-900"
+                "text-white",
+                "text-white/80",
+                "!text-gray-900",
+                "hover:text-white",
+                "hover:!text-white",
+                "hover:text-yellow-400",
+                "hover:text-pink-500"
                 );
+                // Add custom hover color (orange and pink)
+                el.classList.add("hover:text-orange-400", "hover:text-pink-400");
             });
+            }
+
+            this.lastScrollY = currentScrollY;
         }
-
-        lastScrollY = currentScrollY;
-    }
     setupScrollListener() {
         window.addEventListener("scroll", () => {
             if (!this.ticking) {
