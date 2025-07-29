@@ -105,9 +105,9 @@ class PostController extends Controller
                 // Get image data as stream
                 $imageData = $resizedImage->encode();
 
-                // Store in S3 with error handling
+                // Store in S3 without ACL (since bucket doesn't support ACLs)
                 $path = 'images/posts/' . $filename;
-                $uploaded = Storage::disk('s3')->put($path, $imageData, 'public');
+                $uploaded = Storage::disk('s3')->put($path, $imageData);
 
                 if (!$uploaded) {
                     throw new \Exception('Failed to upload image to S3');
@@ -239,8 +239,8 @@ class PostController extends Controller
                 $constraint->upsize();
             });
 
-            // Store in S3
-            Storage::disk('s3')->put('images/posts/' . $filename, $resizedImage->encode(), 'public');
+            // Store in S3 without ACL
+            Storage::disk('s3')->put('images/posts/' . $filename, $resizedImage->encode());
             $validated['featured_image'] = 'images/posts/' . $filename;
         }
 

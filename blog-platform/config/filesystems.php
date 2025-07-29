@@ -54,8 +54,12 @@ return [
             'url' => env('AWS_URL'),
             'endpoint' => env('AWS_ENDPOINT'),
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
-            'throw' => true, // This will throw exceptions instead of failing silently
+            'throw' => true,
             'report' => true,
+            'options' => [
+                'CacheControl' => 'max-age=31536000',
+                'ContentType' => 'application/octet-stream',
+            ],
         ],
     ],
 
