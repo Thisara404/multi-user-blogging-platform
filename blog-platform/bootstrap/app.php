@@ -14,7 +14,13 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'role' => \App\Http\Middleware\CheckRole::class,
             'permission' => \App\Http\Middleware\CheckPermission::class,
+            'force.https' => \App\Http\Middleware\ForceHttps::class,
         ]);
+
+        // Apply ForceHttps middleware to web routes in production
+        if (env('APP_ENV') === 'production') {
+            $middleware->web([\App\Http\Middleware\ForceHttps::class]);
+        }
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
