@@ -6,6 +6,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 Route::get('/', function () {
     return view('welcome');
@@ -65,5 +66,41 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::patch('/comments/{comment}/approve', [CommentController::class, 'approve'])->name('admin.comments.approve');
     Route::patch('/comments/{comment}/reject', [CommentController::class, 'reject'])->name('admin.comments.reject');
 });
+
+// Add this temporary test route
+Route::get('/test-s3', function() {
+    try {
+        // Test S3 connection
+        $disk = Storage::disk('s3');
+
+        // Try to create a test file
+        $testContent = 'Test file - ' . now();
+        $result = $disk->put('test/test.txt', $testContent);
+
+        if ($result) {
+            $url = $disk->url('test/test.txt');
+            return response()->json([
+                'status' => 'success',
+                'message' => 'S3 connection working',
+                'test_file_url' => $url,
+                'config' => [
+                    'region' => config('filesystems.disks.s3.region'),
+                    'bucket' => config('filesystems.disks.s3.bucket'),
+                ]
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to upload test file'
+            ]);
+        }
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => $e->getMessage(),
+            'trace' => $e->getTraceAsString()
+        ]);
+    }
+})->middleware('auth');
 
 require __DIR__.'/auth.php';

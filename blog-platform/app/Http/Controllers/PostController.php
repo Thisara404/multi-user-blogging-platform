@@ -91,19 +91,51 @@ class PostController extends Controller
 
         // Handle image upload with resizing
         if ($request->hasFile('featured_image')) {
-            $image = $request->file('featured_image');
-            $filename = time() . '_' . Str::random(10) . '.' . $image->getClientOriginalExtension();
+            try {
+                $image = $request->file('featured_image');
+                $filename = time() . '_' . Str::random(10) . '.' . $image->getClientOriginalExtension();
 
-            // Resize image
-            $manager = new ImageManager(new Driver());
-            $resizedImage = $manager->read($image)->resize(800, 600, function ($constraint) {
-                $constraint->aspectRatio();
-                $constraint->upsize();
-            });
+                // Resize image
+                $manager = new ImageManager(new Driver());
+                $resizedImage = $manager->read($image)->resize(800, 600, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                });
 
-            // Store in S3
-            Storage::disk('s3')->put('images/posts/' . $filename, $resizedImage->encode(), 'public');
-            $validated['featured_image'] = 'images/posts/' . $filename;
+                // Get image data as stream
+                $imageData = $resizedImage->encode();
+
+                // Store in S3 with error handling
+                $path = 'images/posts/' . $filename;
+                $uploaded = Storage::disk('s3')->put($path, $imageData, 'public');
+
+                if (!$uploaded) {
+                    throw new \Exception('Failed to upload image to S3');
+                }
+
+                // Verify the file exists
+                if (!Storage::disk('s3')->exists($path)) {
+                    throw new \Exception('Image upload verification failed');
+                }
+
+                $validated['featured_image'] = $path;
+
+                // Log success for debugging
+                \Log::info('Image uploaded successfully', [
+                    'filename' => $filename,
+                    'path' => $path,
+                    'url' => Storage::disk('s3')->url($path)
+                ]);
+
+            } catch (\Exception $e) {
+                \Log::error('Image upload failed', [
+                    'error' => $e->getMessage(),
+                    'file' => $image->getClientOriginalName() ?? 'unknown'
+                ]);
+
+                // Return error instead of continuing
+                return back()->withErrors(['featured_image' => 'Failed to upload image: ' . $e->getMessage()])->withInput();
+            }
         }
 
         $post = Post::create($validated);
