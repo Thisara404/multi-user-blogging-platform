@@ -95,11 +95,7 @@
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
 
-                            @if($post->featured_image)
-                                <img src="{{ $post->featured_image_url }}"
-                                     alt="{{ $post->title }}"
-                                     class="w-full h-64 object-cover">
-                            @endif
+                           
                         </div>
 
                         <!-- Content -->
