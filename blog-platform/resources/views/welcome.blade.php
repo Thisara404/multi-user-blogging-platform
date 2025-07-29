@@ -896,7 +896,8 @@
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.347-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.167-1.507-.7-2.448-2.78-2.448-4.958 0-3.771 2.737-7.229 7.892-7.229 4.144 0 7.365 2.953 7.365 6.899 0 4.117-2.595 7.431-6.199 7.431-1.211 0-2.348-.63-2.738-1.378 0 0-.599 2.282-.744 2.84-.282 1.084-1.064 2.456-1.549 3.235C9.584 23.815 10.77 24.001 12.017 24.001c6.624 0 11.99-5.367 11.99-12.014C24.007 5.367 18.641.001 12.017.001z"/>
                         </svg>
-                    </a>
+                        </a>
+                    </div>
                 </div>
 
                 <!-- Platform Links -->
@@ -966,20 +967,34 @@
                 navbar.classList.add('bg-white/95', 'backdrop-blur-md', 'shadow-xl');
                 navbar.classList.remove('bg-transparent');
 
-                // Apply gradient text for nav links and logo
-                navbar.querySelectorAll('.nav-link, h1').forEach(el => {
+                // Apply gradient text ONLY to navbar elements
+                navbar.querySelectorAll('.nav-link').forEach(el => {
                     el.classList.add('bg-gradient-to-r', 'from-blue-500', 'to-purple-600', 'bg-clip-text', 'text-transparent');
-                    el.classList.remove('text-white', 'text-white/80', '!text-gray-900');
+                    el.classList.remove('text-white', 'text-white/80');
                 });
+                
+                // Handle navbar logo separately
+                const navbarLogo = navbar.querySelector('h1');
+                if (navbarLogo) {
+                    navbarLogo.classList.add('bg-gradient-to-r', 'from-blue-500', 'to-purple-600', 'bg-clip-text', 'text-transparent');
+                    navbarLogo.classList.remove('text-white', 'text-white/80');
+                }
             } else {
                 navbar.classList.remove('bg-white/95', 'backdrop-blur-md', 'shadow-xl');
                 navbar.classList.add('bg-transparent');
 
-                // Restore gradient text for nav links and logo
-                navbar.querySelectorAll('.nav-link, h1').forEach(el => {
-                    el.classList.add('bg-gradient-to-r', 'from-blue-500', 'to-pink-500', 'bg-clip-text', 'text-transparent');
-                    el.classList.remove('text-white', 'text-white/80', '!text-gray-900');
+                // Restore original navbar colors ONLY
+                navbar.querySelectorAll('.nav-link').forEach(el => {
+                    el.classList.add('text-white/80');
+                    el.classList.remove('bg-gradient-to-r', 'from-blue-500', 'to-purple-600', 'bg-clip-text', 'text-transparent');
                 });
+                
+                // Handle navbar logo separately
+                const navbarLogo = navbar.querySelector('h1');
+                if (navbarLogo) {
+                    navbarLogo.classList.add('text-gray-900');
+                    navbarLogo.classList.remove('bg-gradient-to-r', 'from-blue-500', 'to-purple-600', 'bg-clip-text', 'text-transparent');
+                }
             }
 
             lastScrollY = currentScrollY;
@@ -1047,7 +1062,7 @@
 
         // Animate stats on scroll
         const animateStats = () => {
-            const statsElements = document.querySelectorAll('.text-4xl.font-bold');
+            const statsElements = document.querySelectorAll('.mt-16.grid.grid-cols-3 .text-4xl.font-bold');
             statsElements.forEach(stat => {
                 const rect = stat.getBoundingClientRect();
                 if (rect.top < window.innerHeight && rect.bottom > 0) {
