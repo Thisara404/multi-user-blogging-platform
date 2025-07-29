@@ -163,17 +163,12 @@
                         </span>
                     </div>
 
-                    <h1
-                        class="text-4xl tracking-tight font-extrabold sm:text-5xl md:text-6xl xl:text-7xl animate-slide-up">
-                        <span
-                            class="block mb-2 bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">Create</span>
-                        <span
-                            class="block gradient-text bg-gradient-to-r from-yellow-400 via-orange-500 to-pink-500 bg-clip-text text-transparent mb-2">
+                    <h1 class="text-4xl tracking-tight font-extrabold sm:text-5xl md:text-6xl xl:text-7xl animate-slide-up">
+                        <span class="block mb-2 hero-gradient-1">Create</span>
+                        <span class="block hero-gradient-2 mb-2">
                             Amazing Stories
                         </span>
-                        <span
-                            class="block mb-2 bg-gradient-to-r from-blue-500 to-pink-400 bg-clip-text text-transparent">That
-                            Matter</span>
+                        <span class="block mb-2 hero-gradient-3">That Matter</span>
                     </h1>
 
                     <p
@@ -786,8 +781,7 @@
             <div class="scroll-reveal">
                 <h2 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-6">
                     Ready to share your
-                    <span
-                        class="block gradient-text bg-gradient-to-r from-yellow-300 via-orange-400 to-pink-400 bg-clip-text text-transparent">
+                    <span class="block cta-gradient">
                         amazing story?
                     </span>
                 </h2>
@@ -899,9 +893,8 @@
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                                 <path
                                     d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.347-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.167-1.507-.7-2.448-2.78-2.448-4.958 0-3.771 2.737-7.229 7.892-7.229 4.144 0 7.365 2.953 7.365 6.899 0 4.117-2.595 7.431-6.199 7.431-1.211 0-2.348-.63-2.738-1.378 0 0-.599 2.282-.744 2.84-.282 1.084-1.064 2.456-1.549 3.235C9.584 23.815 10.77 24.001 12.017 24.001c6.624 0 11.99-5.367 11.99-12.014C24.007 5.367 18.641.001 12.017.001z" />
-                            </svg>
-                        </a>
-                    </div>
+                        </svg>
+                    </a>
                 </div>
 
                 <!-- Platform Links -->
