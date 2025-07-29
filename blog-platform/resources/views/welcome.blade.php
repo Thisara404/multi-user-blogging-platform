@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>BlogSphere - Multi-User Blogging Platform</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    {{-- <script src="https://cdn.tailwindcss.com"></script> --}}
 
     <meta name="description"
         content="A powerful multi-user blogging platform built with Laravel. Create, share, and discover amazing content with our community-driven blog.">
