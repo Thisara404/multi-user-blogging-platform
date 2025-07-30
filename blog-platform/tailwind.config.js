@@ -101,6 +101,11 @@ export default {
         'hover:bg-blue-700',
         'hover:bg-gray-100',
 
+        // Initial state classes
+        'hover:text-white',
+        'hover:bg-white/10',
+        'hover:backdrop-blur-sm',
+
         // All your existing classes...
         // (keep all the existing safelist items from your current config)
     ],
