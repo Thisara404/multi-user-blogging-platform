@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Storage;
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             <article class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 @if($post->featured_image)
-                    <img src="{{ $post->featured_image_url }}"
+                    <img src="https://thisaradasun.s3.eu-north-1.amazonaws.com/{{ $post->featured_image }}"
                          alt="{{ $post->title }}"
                          class="w-full h-64 object-cover">
                 @endif

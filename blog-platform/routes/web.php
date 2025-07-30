@@ -103,4 +103,22 @@ Route::get('/test-s3', function() {
     }
 })->middleware('auth');
 
+// Add this temporary debug route
+Route::get('/debug-s3', function() {
+    $post = \App\Models\Post::where('featured_image', '!=', null)->first();
+
+    if (!$post) {
+        return 'No posts with images found';
+    }
+
+    return [
+        'featured_image_field' => $post->featured_image,
+        'featured_image_url_method' => $post->featured_image_url,
+        'direct_s3_url' => 'https://thisaradasun.s3.eu-north-1.amazonaws.com/' . $post->featured_image,
+        'storage_s3_url' => Storage::disk('s3')->url($post->featured_image),
+        'config_default_disk' => config('filesystems.default'),
+        'app_environment' => app()->environment(),
+    ];
+})->middleware('auth');
+
 require __DIR__.'/auth.php';

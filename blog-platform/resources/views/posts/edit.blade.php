@@ -84,11 +84,12 @@ use Illuminate\Support\Facades\Storage;
                                 Image</label>
                             <input type="file" name="featured_image" id="featured_image" accept="image/*"
                                 class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
-                            @if ($post->featured_image)
+                            @if($post->featured_image)
                                 <div class="mt-4">
                                     <p class="text-sm text-gray-600">Current Image:</p>
-                                    <img src="{{ $post->featured_image_url }}" alt="{{ $post->title }}"
-                                        class="w-full h-64 object-cover">
+                                    <img src="https://thisaradasun.s3.eu-north-1.amazonaws.com/{{ $post->featured_image }}"
+                                         alt="{{ $post->title }}"
+                                         class="w-full h-64 object-cover">
                                 </div>
                             @endif
                             @error('featured_image')

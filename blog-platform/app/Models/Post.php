@@ -30,19 +30,27 @@ class Post extends Model
         'published_at' => 'datetime',
     ];
 
-    // Add this method for S3 image URLs
+    // ✅ Fix this method
     public function getFeaturedImageUrlAttribute()
     {
         if (!$this->featured_image) {
             return null;
         }
 
-        // Check if we're using S3
-        if (config('filesystems.default') === 's3') {
-            return Storage::disk('s3')->url($this->featured_image);
+        // Always use S3 in production
+        if (app()->environment('production') || config('filesystems.default') === 's3') {
+            try {
+                return Storage::disk('s3')->url($this->featured_image);
+            } catch (\Exception $e) {
+                \Log::error('S3 URL generation failed', [
+                    'image' => $this->featured_image,
+                    'error' => $e->getMessage()
+                ]);
+                return null;
+            }
         }
 
-        // Fallback to local asset
+        // Fallback to local asset for development
         return asset($this->featured_image);
     }
 
