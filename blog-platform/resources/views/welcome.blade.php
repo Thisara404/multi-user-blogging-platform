@@ -960,7 +960,7 @@
         let lastScrollY = 0;
         const navbar = document.getElementById('navbar');
 
-        function updateNavbar() {
+        {{-- function updateNavbar() {
             const currentScrollY = window.scrollY;
 
             if (currentScrollY > 50) {
@@ -998,7 +998,7 @@
             }
 
             lastScrollY = currentScrollY;
-        }
+        } --}}
 
         // Throttle scroll events for better performance
         let ticking = false;

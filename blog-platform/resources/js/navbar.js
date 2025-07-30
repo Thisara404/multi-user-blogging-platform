@@ -69,23 +69,22 @@ export class NavbarManager {
             );
             this.navbar.classList.remove("bg-transparent");
 
-            // Apply dark gradient text for nav links when scrolled
+            // Apply blue and red gradient text for nav links when scrolled
             this.navbar.querySelectorAll(".nav-link").forEach((el) => {
                 if (el && el.classList) {
                     // Remove all previous color classes
                     el.classList.remove(
-                        "text-white",
-                        "text-white/80",
-                        "text-white/90",
+                        "text-black",
+                        "text-black/80",
+                        "text-black/90",
                         "text-transparent"
                     );
 
-                    // Add dark gradient for scrolled state
+                    // Add blue and red gradient for scrolled state
                     el.classList.add(
                         "bg-gradient-to-r",
                         "from-blue-600",
-                        "via-purple-600",
-                        "to-pink-600",
+                        "to-red-600",
                         "bg-clip-text",
                         "text-transparent"
                     );
