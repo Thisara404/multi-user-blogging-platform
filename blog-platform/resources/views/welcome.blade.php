@@ -82,7 +82,7 @@
                                     d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" />
                             </svg>
                         </div>
-                        <h1 class="text-xl font-bold bg-gradient-to-r from-cyan-300 via-purple-300 to-pink-300 bg-clip-text text-transparent tracking-tight">BlogSphere</h1>
+                        <h1 class="text-xl font-bold text-white tracking-tight">BlogSphere</h1>
                     </div>
                 </div>
 
@@ -90,21 +90,21 @@
                 <div class="hidden md:block">
                     <div class="ml-10 flex items-baseline space-x-8">
                         <a href="{{ route('blog.index') }}"
-                            class="nav-link bg-gradient-to-r from-cyan-200 via-blue-200 to-purple-200 bg-clip-text text-transparent hover:from-cyan-100 hover:via-blue-100 hover:to-purple-100 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-white/10 hover:backdrop-blur-sm">All Posts</a>
+                            class="nav-link text-white/90 hover:text-white px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-white/10 hover:backdrop-blur-sm">All Posts</a>
                         @auth
                             <a href="{{ route('posts.create') }}"
-                                class="nav-link bg-gradient-to-r from-emerald-200 via-teal-200 to-cyan-200 bg-clip-text text-transparent hover:from-emerald-100 hover:via-teal-100 hover:to-cyan-100 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-purple-500/20 hover:backdrop-blur-sm">Write</a>
+                                class="nav-link text-white/80 hover:text-white px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-purple-500/20 hover:backdrop-blur-sm">Write</a>
                             <a href="{{ route('dashboard') }}"
-                                class="nav-link bg-gradient-to-r from-purple-200 via-pink-200 to-rose-200 bg-clip-text text-transparent hover:from-purple-100 hover:via-pink-100 hover:to-rose-100 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-purple-500/20 hover:backdrop-blur-sm">Dashboard</a>
+                                class="nav-link text-white/80 hover:text-white px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-purple-500/20 hover:backdrop-blur-sm">Dashboard</a>
                             @hasrole('admin')
                                 <a href="{{ route('admin.dashboard') }}"
-                                    class="nav-link bg-gradient-to-r from-orange-200 via-red-200 to-pink-200 bg-clip-text text-transparent hover:from-orange-100 hover:via-red-100 hover:to-pink-100 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-white/10 hover:backdrop-blur-sm">Admin</a>
+                                    class="nav-link text-white/90 hover:text-white px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-white/10 hover:backdrop-blur-sm">Admin</a>
                             @endhasrole
                         @else
                             <a href="#features"
-                                class="nav-link bg-gradient-to-r from-blue-200 via-indigo-200 to-purple-200 bg-clip-text text-transparent hover:from-blue-100 hover:via-indigo-100 hover:to-purple-100 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-white/10 hover:backdrop-blur-sm">Features</a>
+                                class="nav-link text-white/90 hover:text-white px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-white/10 hover:backdrop-blur-sm">Features</a>
                             <a href="#pricing"
-                                class="nav-link bg-gradient-to-r from-violet-200 via-purple-200 to-fuchsia-200 bg-clip-text text-transparent hover:from-violet-100 hover:via-purple-100 hover:to-fuchsia-100 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-white/10 hover:backdrop-blur-sm">Pricing</a>
+                                class="nav-link text-white/90 hover:text-white px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-white/10 hover:backdrop-blur-sm">Pricing</a>
                         @endauth
                     </div>
                 </div>
@@ -113,23 +113,23 @@
                 <div class="flex items-center space-x-4">
                     @auth
                         <a href="{{ route('dashboard') }}"
-                            class="nav-link bg-gradient-to-r from-teal-200 via-cyan-200 to-blue-200 bg-clip-text text-transparent hover:from-teal-100 hover:via-cyan-100 hover:to-blue-100 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-white/10">
+                            class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-white/10">
                             My Account
                         </a>
                         <form method="POST" action="{{ route('logout') }}" class="inline">
                             @csrf
                             <button type="submit"
-                                class="bg-gradient-to-r from-white to-gray-50 text-blue-600 hover:from-gray-50 hover:to-gray-100 px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
+                                class="bg-white text-blue-600 hover:bg-gray-100 px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
                                 Logout
                             </button>
                         </form>
                     @else
                         <a href="{{ route('login') }}"
-                            class="nav-link bg-gradient-to-r from-slate-200 via-gray-200 to-zinc-200 bg-clip-text text-transparent hover:from-slate-100 hover:via-gray-100 hover:to-zinc-100 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-white/10">
+                            class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-white/10">
                             Sign In
                         </a>
                         <a href="{{ route('register') }}"
-                            class="bg-gradient-to-r from-white to-gray-50 text-blue-600 hover:from-gray-50 hover:to-gray-100 px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
+                            class="bg-white text-blue-600 hover:bg-gray-100 px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
                             Get Started Free
                         </a>
                     @endauth
@@ -959,8 +959,8 @@
         // Navbar scroll effect with improved performance
         let lastScrollY = 0;
         const navbar = document.getElementById('navbar');
-
-        {{-- function updateNavbar() {
+{{-- 
+        function updateNavbar() {
             const currentScrollY = window.scrollY;
 
             if (currentScrollY > 50) {
