@@ -37,7 +37,7 @@ class Post extends Model
             return null;
         }
 
-        // Fix: Check the correct config key
+        // Check if we're using S3
         if (config('filesystems.default') === 's3') {
             return Storage::disk('s3')->url($this->featured_image);
         }
