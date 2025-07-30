@@ -9,7 +9,7 @@ export default {
         './resources/views/**/*.blade.php',
         './resources/js/**/*.js',
     ],
-    
+
     safelist: [
         // Hero Section Gradients - First h1
         'bg-gradient-to-r',
@@ -20,19 +20,19 @@ export default {
         'to-pink-500',
         'from-blue-500',
         'to-pink-400',
-        
+
         // CTA Section Gradients - Second h2
         'from-yellow-300',
         'via-orange-400',
         'to-pink-400',
-        
+
         // Text utilities
         'bg-clip-text',
         'text-transparent',
         'text-white',
         'text-white/90',
         'text-white/80',
-        
+
         // All your existing safelist classes
         'gradient-text',
         'block',
@@ -53,7 +53,7 @@ export default {
         'leading-relaxed',
         'text-xl',
         'md:text-2xl',
-        
+
         // Layout classes
         'relative',
         'max-w-5xl',
@@ -62,7 +62,7 @@ export default {
         'sm:px-6',
         'lg:px-8',
         'scroll-reveal',
-        
+
         // All other gradient combinations you use throughout
         'from-pink-400',
         'from-pink-500',
@@ -88,7 +88,19 @@ export default {
         'via-purple-500',
         'via-purple-600',
         'via-purple-800',
-        
+
+        // Navbar color classes
+        'text-gray-700',
+        'text-gray-900',
+        'hover:text-gray-900',
+        'hover:text-white',
+        'from-blue-600',
+        'via-purple-600',
+        'to-pink-600',
+        'bg-blue-600',
+        'hover:bg-blue-700',
+        'hover:bg-gray-100',
+
         // All your existing classes...
         // (keep all the existing safelist items from your current config)
     ],

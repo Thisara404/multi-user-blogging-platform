@@ -22,6 +22,7 @@ export class NavbarManager {
         const currentScrollY = window.scrollY;
 
         if (currentScrollY > 50) {
+            // Scrolled state - white background with dark text
             this.navbar.classList.add(
                 "bg-white/95",
                 "backdrop-blur-md",
@@ -29,29 +30,71 @@ export class NavbarManager {
             );
             this.navbar.classList.remove("bg-transparent");
 
-            // Apply gradient text for nav links and logo
-            this.navbar.querySelectorAll(".nav-link, h1").forEach((el) => {
-                if (el && el.classList) { // Add safety check
-                    el.classList.add(
-                        "bg-gradient-to-r",
-                        "from-orange-500",
-                        "via-pink-500",
-                        "to-pink-400",
-                        "bg-clip-text",
-                        "text-transparent"
-                    );
+            // Apply dark gradient text for nav links and logo when scrolled
+            this.navbar.querySelectorAll(".nav-link").forEach((el) => {
+                if (el && el.classList) {
+                    // Remove all previous color classes
                     el.classList.remove(
                         "text-white",
                         "text-white/80",
-                        "!text-gray-900",
-                        "hover:text-white",
-                        "hover:!text-white",
-                        "hover:text-yellow-400",
-                        "hover:text-pink-500"
+                        "text-transparent",
+                        "bg-gradient-to-r",
+                        "from-pink-400",
+                        "via-orange-400",
+                        "to-pink-300",
+                        "bg-clip-text"
+                    );
+
+                    // Add dark gradient for scrolled state
+                    el.classList.add(
+                        "bg-gradient-to-r",
+                        "from-blue-600",
+                        "via-purple-600",
+                        "to-pink-600",
+                        "bg-clip-text",
+                        "text-transparent"
                     );
                 }
             });
+
+            // Handle navbar logo
+            const navbarLogo = this.navbar.querySelector("h1");
+            if (navbarLogo) {
+                navbarLogo.classList.remove(
+                    "text-white",
+                    "text-white/80",
+                    "text-transparent",
+                    "bg-gradient-to-r",
+                    "from-pink-400",
+                    "via-orange-400",
+                    "to-pink-300",
+                    "bg-clip-text"
+                );
+
+                navbarLogo.classList.add(
+                    "bg-gradient-to-r",
+                    "from-blue-600",
+                    "via-purple-600",
+                    "to-pink-600",
+                    "bg-clip-text",
+                    "text-transparent"
+                );
+            }
+
+            // Handle auth buttons
+            this.navbar.querySelectorAll("a[href*='login'], a[href*='register']").forEach((el) => {
+                if (el.textContent.includes('Sign In') || el.href.includes('login')) {
+                    // Login button - make it visible with dark text
+                    el.classList.remove("text-white/80", "text-white");
+                    el.classList.add("text-gray-700", "hover:text-gray-900");
+                } else if (el.textContent.includes('Get Started') || el.href.includes('register')) {
+                    // Register button - keep the styling but ensure visibility
+                    el.classList.add("bg-blue-600", "text-white", "hover:bg-blue-700");
+                }
+            });
+
         } else {
+            // Transparent state - transparent background with white text
             this.navbar.classList.remove(
                 "bg-white/95",
                 "backdrop-blur-md",
@@ -59,17 +102,48 @@ export class NavbarManager {
             );
             this.navbar.classList.add("bg-transparent");
 
-            // Restore gradient text for nav links and logo
-            this.navbar.querySelectorAll(".nav-link, h1").forEach((el) => {
-                if (el && el.classList) { // Add safety check
-                    el.classList.add(
+            // Restore white/light text for transparent state
+            this.navbar.querySelectorAll(".nav-link").forEach((el) => {
+                if (el && el.classList) {
+                    // Remove scrolled state classes
+                    el.classList.remove(
                         "bg-gradient-to-r",
-                        "from-pink-400",
-                        "via-orange-400",
-                        "to-pink-300",
+                        "from-blue-600",
+                        "via-purple-600",
+                        "to-pink-600",
                         "bg-clip-text",
                         "text-transparent"
                     );
+
+                    // Add white text for transparent state
+                    el.classList.add("text-white/80");
+                }
+            });
+
+            // Handle navbar logo for transparent state
+            const navbarLogo = this.navbar.querySelector("h1");
+            if (navbarLogo) {
+                navbarLogo.classList.remove(
+                    "bg-gradient-to-r",
+                    "from-blue-600",
+                    "via-purple-600",
+                    "to-pink-600",
+                    "bg-clip-text",
+                    "text-transparent"
+                );
+
+                navbarLogo.classList.add("text-white");
+            }
+
+            // Handle auth buttons for transparent state
+            this.navbar.querySelectorAll("a[href*='login'], a[href*='register']").forEach((el) => {
+                if (el.textContent.includes('Sign In') || el.href.includes('login')) {
+                    // Login button - white text on transparent
+                    el.classList.remove("text-gray-700", "text-gray-900");
+                    el.classList.add("text-white/80", "hover:text-white");
+                } else if (el.textContent.includes('Get Started') || el.href.includes('register')) {
+                    // Register button - keep white background for visibility
+                    el.classList.add("bg-white", "text-blue-600", "hover:bg-gray-100");
                 }
             });
         }
